@@ -1,5 +1,7 @@
 package com.example.tamrin.ui
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
@@ -19,13 +21,12 @@ import com.example.tamrin.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun testTopAppBar() {
+fun TestTopAppBar() {
     val context = LocalContext.current
     val icon1 = painterResource(id = R.drawable.ice_fav)
     val icon2 = painterResource(id = R.drawable.down)
-val showMenu= remember {
-    mutableStateOf()
-}
+    val showMenu = remember { mutableStateOf(false) }
+
     TopAppBar(title = { Text(text = "Top App Bar") },
         navigationIcon = {
             IconButton(onClick = { }) {
@@ -36,19 +37,40 @@ val showMenu= remember {
             IconButton(onClick = {
                 makeToast(context, "favoriets")
             }) {
-Icon(painter = icon1, contentDescription =null )
+                Icon(painter = icon1, contentDescription = null)
             }
-            IconButton(onClick = { showMenu.value=true}) {
-                Icon(Icons.Default.MoreVert,contentDescription = null)
+            IconButton(onClick = { showMenu.value = true }) {
+                Icon(Icons.Default.MoreVert, contentDescription = null)
             }
-            DropdownMenu(expanded = showMenu.value, onDismissRequest = {showMenu.value=false}) {
-                DropdownMenuItem( onClick = { makeToast(context,"fb icon clicked") }){ Icon(
-                   painter = icon1 ,
-                    contentDescription = null
-                )}
-                DropdownMenuItem( onClick = { makeToast(context,"fb icon clicked") }){}
+            DropdownMenu(
+                expanded = showMenu.value,
+                onDismissRequest = { showMenu.value = false }
+            ) {
+                DropdownMenuItem(
+                    text = {
+                        Icon(
+                            painter = icon1,
+                            contentDescription = null
+                        )
+                    }, onClick = {
+                        makeToast(context, "fb icon clicked")
+                    })
+                DropdownMenuItem(
+                    text = {
+                        Icon(
+                            painter = icon2,
+                            contentDescription = null
+                        )
+                    },
+                    onClick = {
+                        makeToast(context, "fb icon clicked")
+                    }
+                )
             }
         }
     )
+}
 
+fun makeToast(context: Context, text: String) {
+    Toast.makeText(context, text, Toast.LENGTH_LONG).show()
 }
